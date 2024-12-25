@@ -7,9 +7,9 @@ def index():
     return render_template('index.html')
 
 # Route for the web app
-@core.route('/tool')
-def tool():
-    return render_template('tool.html')
+@core.route('/generate-portfolio')
+def generate_portfolio():
+    return render_template('generate_portfolio.html')
 
 # Route for the contact page
 @core.route('/contact')
