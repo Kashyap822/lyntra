@@ -6,15 +6,37 @@ Welcome to the Lyntra project. By answering a few questions about yourself and u
 
 Ensure you have Python >=3.10 <=3.13 installed on your system.
 
-Install flask if you haven't already:
+Install Flask if you haven't already:
 
 ```bash
 pip install flask
 ```
 
+Install CrewAI and its tools:
+
+```bash
+pip install crewai crewai-tools
+```
+
+## Setting Up the Crew
+
+Navigate to the `src` directory:
+
+```bash
+cd src
+```
+
+Set up the CrewAI environment:
+
+```bash
+crewai install
+```
+
 ## Running the Project
 
-To run the flask app:
+Navigate back to the `lyntra` directory
+
+To run the Flask app:
 
 ```bash
 flask run
