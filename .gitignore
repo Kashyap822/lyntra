@@ -4,3 +4,15 @@
 # Ignore Python bytecode
 *.pyc
 *.pyo
+
+# Ignore Python cache
+__pycache__
+
+# Ignore lock files
+*.lock
+
+# Ignore environment files
+.env
+
+# Ignore genrated wesbite files
+src/templates/website/

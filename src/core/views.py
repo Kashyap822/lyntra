@@ -1,5 +1,10 @@
 from flask import render_template, request, Blueprint, session, redirect, url_for
 
+from src.portfolio_generator.crew import WebsiteGenerator
+
+# CrewAI Flows Functionality
+from crewai.flow.flow import Flow, listen, start, and_, or_, router
+
 core = Blueprint('core', __name__)
 # Route for the home page
 @core.route('/')
@@ -88,4 +93,4 @@ def submit_quiz():
     session['generated_html'] = html_output
 
     # Redirect to a new route to display the HTML
-    return redirect(url_for('display_website'))
+    return redirect(url_for('core.display_website'))
