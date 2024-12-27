@@ -1,0 +1,11 @@
+javascript_generation_task:
+  description: >
+    Generate a complete JavaScript page based on the HTML and CSS pages you are given.
+  expected_output: >
+    A fully-formed JavaScript page with the requested purpose, theme, color, content, and layout.
+    **Do not generate text before or after the output**.
+    **Include plenty of comments in your code.**
+    **Do not enclose your output in ```javascript symbols.**
+    **GENERATE ONLY THE JAVASCRIPT CODE, NOTHING ELSE.**
+    **Tag everything in the script tag.**
+  agent: javascript_generator 

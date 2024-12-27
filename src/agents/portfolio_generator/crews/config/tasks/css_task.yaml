@@ -1,0 +1,12 @@
+css_generation_task:
+  description: >
+    Generate a complete CSS page based on the HTML page you are given.
+  expected_output: >
+    A fully-formed CSS page with the requested purpose, theme, color, content, and layout.
+    Link to the page "website.html".
+    **Do not generate text before or after the output**.
+    **Include plenty of comments in your code.**
+    **Do NOT enclose your output in ```css symbols.**
+    ** Tag everything in the style tag.**
+    **GENERATE ONLY THE CSS CODE, NOTHING ELSE.**
+  agent: css_generator 
