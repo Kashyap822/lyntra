@@ -1,12 +1,14 @@
 css_generation_task:
   description: >
-    Generate a complete CSS page based on the HTML page you are given.
+    Here is the current HTML document: {file_content}
+    Enhance the HTML document given by adding a <style> tag
+    containing CSS styles. Use the user's input for theme which is {theme} and color preferences which is {color} to style the document appropriately.
+    Ensure the CSS is embedded in the <head> section of the HTML.
   expected_output: >
-    A fully-formed CSS page with the requested purpose, theme, color, content, and layout.
-    Link to the page "website.html".
+    An updated HTML document with:
+    - A <style> tag inside the <head> section.
+    - Styles for body, header, sections, and footer based on the user's theme and color inputs.
+    - A cohesive and visually appealing design.
     **Do not generate text before or after the output**.
-    **Include plenty of comments in your code.**
-    **Do NOT enclose your output in ```css symbols.**
-    ** Tag everything in the style tag.**
-    **GENERATE ONLY THE CSS CODE, NOTHING ELSE.**
-  agent: css_generator 
+    **Do not enclose your output in ```html symbols.**
+  agent: css_generator

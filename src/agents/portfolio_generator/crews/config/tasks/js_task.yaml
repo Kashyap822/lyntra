@@ -1,11 +1,15 @@
 javascript_generation_task:
   description: >
-    Generate a complete JavaScript page based on the HTML and CSS pages you are given.
+    Here is the current HTML document that is the portoflio website: {file_content}
+    Add interactivity to the portfolio website by generating a <script> tag with JavaScript.
+    The script should include basic functionality, such as smooth scrolling for internal links,
+    dynamic updates, or other interactivity based on user preferences.
+    Embed the JavaScript at the end of the HTML document.
   expected_output: >
-    A fully-formed JavaScript page with the requested purpose, theme, color, content, and layout.
+    An updated HTML document with:
+    - A <script> tag added at the end of the <body> section.
+    - JavaScript functionality for smooth scrolling or other user-defined interactivity.
+    - Properly scoped and well-structured JavaScript code.
     **Do not generate text before or after the output**.
-    **Include plenty of comments in your code.**
-    **Do not enclose your output in ```javascript symbols.**
-    **GENERATE ONLY THE JAVASCRIPT CODE, NOTHING ELSE.**
-    **Tag everything in the script tag.**
-  agent: javascript_generator 
+    **Do not enclose your output in ```html symbols.**
+  agent: javascript_generator

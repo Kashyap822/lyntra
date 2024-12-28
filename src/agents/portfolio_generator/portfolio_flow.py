@@ -7,9 +7,8 @@ import os
 from pathlib import Path
 
 class PortfolioState(BaseModel):
-    html_content: str = ""
-    css_content: str = ""
-    js_content: str = ""
+    website_content: str = ""
+
 
 class PortfolioFlow(Flow[PortfolioState]):
 
@@ -21,22 +20,22 @@ class PortfolioFlow(Flow[PortfolioState]):
     def generate_html(self):
         print("Starting HTML generation task")
         html_output = HTMLGenerator().crew().kickoff(inputs=self.inputs)
-        self.state.html_content = html_output.raw
-        return self.state.html_content
+        self.state.website_content = html_output.raw
+        return self.state.website_content
 
     @listen(generate_html)
     def generate_css(self):
         print("Starting CSS generation task")
-        css_output = CSSGenerator().crew().kickoff(inputs={"html_content": self.state.html_content, **self.inputs})
-        self.state.css_content = css_output.raw
-        return self.state.css_content
+        css_output = CSSGenerator().crew().kickoff(inputs={"file_content": self.state.website_content, **self.inputs})
+        self.state.website_content = css_output.raw
+        return self.state.website_content
 
     @listen(generate_css)
     def generate_js(self):
         print("Starting JavaScript generation task")
-        js_output = JSGenerator().crew().kickoff(inputs={"css_content": self.state.css_content, **self.inputs})
-        self.state.js_content = js_output.raw
-        return self.state.js_content
+        js_output = JSGenerator().crew().kickoff(inputs={"file_content": self.state.website_content, **self.inputs})
+        self.state.website_content = js_output.raw.strip('```html').strip('```').strip()
+        return self.state.website_content
 
     @listen(generate_js)
     def save_output(self):
@@ -51,7 +50,5 @@ class PortfolioFlow(Flow[PortfolioState]):
 
         # Write the file
         with open(website_file, 'w') as f:
-            f.write(self.state.css_content)
-            f.write(self.state.html_content)
-            f.write(self.state.js_content)
+            f.write(self.state.website_content)
         return "Output saved successfully"
