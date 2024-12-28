@@ -1,6 +1,5 @@
 from flask import render_template, request, Blueprint, session, redirect, url_for
-
-from src.portfolio_generator.crew import WebsiteGenerator
+from src.agents.portfolio_generator.portfolio_flow import PortfolioFlow
 
 # CrewAI Flows Functionality
 from crewai.flow.flow import Flow, listen, start, and_, or_, router
@@ -77,20 +76,10 @@ def submit_quiz():
         'resume' : resume
     }
 
-    # Run the CrewAI model with the inputs
-    website_generator = WebsiteGenerator()
-    result = website_generator.crew().kickoff(inputs=inputs)
-
-    # Extract the HTML string from the result (assuming result.result holds the HTML)
-    html_output = result.result if hasattr(result, 'result') else str(result)
-
-    # Remove unwanted Markdown-style markers
-    html_output = html_output.strip('```html').strip('```').strip()
-
-    print(f"HTML OUTPUT: {html_output}")
-
-    # Store the generated HTML in the session
-    session['generated_html'] = html_output
+    # Kickoff the portfolio flow with inputs
+    flow = PortfolioFlow(inputs=inputs)
+    result = flow.kickoff()
+    print(f"Flow completed with result: {result}")
 
     # Redirect to a new route to display the HTML
     return redirect(url_for('core.display_website'))

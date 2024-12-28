@@ -1,0 +1,27 @@
+html_generation_task:
+  description: >
+    Generate an HTML structure for a portfolio website based on the user's input.
+    The input includes the user's name, theme, color, layout preferences, and resume.
+    The user's name is {name}.
+    The user's preferred theme is {theme}.
+    The user's preferred color scheme is {color}.
+    The user's preferred layout is {layout}.
+    The user's resume is as follows: {resume}.
+    Ensure the HTML is semantic and well-structured, providing placeholders for CSS and JavaScript.
+  expected_output: >
+    A complete HTML document containing:
+    - A <head> section with a title based on the user's name.
+    - A <body> section with content sections such as "About Me" and "My Work."
+    - Semantic HTML tags like <header>, <section>, and <footer>.
+    - The HTML should be a valid and clean structure without CSS or JavaScript.
+
+    Unless stated otherwise, avoid gray and other dull colors.
+    Unless stated otherwise, the website should automatically include a header, navbar, and footer.
+    Unless stated otherwise, keep the main content and sections centered in the middle of the webpage.
+    Unless stated otherwise, Navbar should be sticky and avoid the color white.
+
+    Only generate the HTML output. 
+    **Do not generate text before or after the output**.
+    **Do not use the generic Arial font. Based on input, deduce the best font typeface for the website. Use a font size of no smaller than 16 for the body content.**
+    **Do not enclose your output in ```html symbols.**
+  agent: html_generator
