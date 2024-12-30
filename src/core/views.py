@@ -1,8 +1,37 @@
 from flask import render_template, request, Blueprint, session, redirect, url_for
 from src.agents.portfolio_generator.portfolio_flow import PortfolioFlow
+from werkzeug.utils import secure_filename
+from src import app
+import os
+import docx
+import fitz
 
-# CrewAI Flows Functionality
-from crewai.flow.flow import Flow, listen, start, and_, or_, router
+# Upload folder
+basedir = os.path.abspath(os.path.dirname(__file__))
+app.config['UPLOAD_FOLDER'] = os.path.join(basedir, 'uploads')
+app.config['ALLOWED_EXTENSIONS'] = {'pdf', 'doc', 'docx'}
+
+# Check if the file is allowed
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
+
+# Extract text from .docx
+def extract_text_from_docx(docx_file):
+    doc = docx.Document(docx_file)
+    text = ''
+    for para in doc.paragraphs:
+        text += para.text + '\n'
+    return text.strip()
+
+# Extract text from .pdf
+def extract_text_from_pdf(pdf_file):
+    doc = fitz.open(pdf_file)
+    text = ''
+    for page_num in range(doc.page_count):
+        page = doc.load_page(page_num)
+        text += page.get_text()
+    return text.strip()
 
 core = Blueprint('core', __name__)
 # Route for the home page
@@ -35,7 +64,7 @@ def terms_of_use():
 def display_website():
     # Get the generated HTML from the session
     html_output = session.get('generated_html')
-    return render_template('website/website.html', html_content=html_output)
+    return render_template('website/website.html')
 
 # API Endpoints
 
@@ -45,36 +74,50 @@ def submit_quiz():
     layout = "one pager"
     purpose = "Build a portfolio based on the resume provided."
 
-    # Get user input from the quiz form
-    data = request.json
-    name = data.get('name')
-    theme = data.get('theme')
-    color = data.get('color')
-    content = data.get('content')
-    resume = data.get('resume')
+    theme = request.form.get('theme', "Simple, modern, and elegant. Use a unique font but not over-the-top")
+    color = request.form.get('color', "Use a combination of warm light colors that compliment well with each other")
+    content = request.form.get('content', "A portfolio with 5 sections: HERO section (with image), about me, my work, education, and contact information")
+    resume = request.files.get('resume')
+
+    # Default resume text if no file is uploaded
+    if not resume:
+        resume = "I do not have a resume. Assume I am a college student with basic work experience"
+    else:
+        # Check if the file is allowed
+        if resume and allowed_file(resume.filename):
+            # Secure the file name and save it to the uploads folder
+            filename = secure_filename(resume.filename)
+
+            if not os.path.exists(app.config['UPLOAD_FOLDER']):
+                os.makedirs(app.config['UPLOAD_FOLDER'])
+
+            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            resume.save(file_path)
+
+            # Extract text based on the file type
+            if filename.endswith('.docx'):
+                resume_text = extract_text_from_docx(file_path)
+            elif filename.endswith('.pdf'):
+                resume_text = extract_text_from_pdf(file_path)
+            else:
+                resume_text = "Unsupported file format"  # If not DOCX or PDF
+
+            resume = resume_text
+        else:
+            resume = "Invalid resume format"  # If the file format is not allowed
 
     # Default values if none are provided.
-    if not name: 
-        name = "John Doe"
-    if not theme: 
-        theme = "Simple, modern, and elegant. Use a unique font but not over-the-top"
-    if not color: 
-        color = "Use a combination of warm light colors that compliment well with each other"
-    if not content: 
-        content = "A portfolio with 5 sections: HERO section (with image), about me, my work, education, and contact information"
-    if not resume: 
-        resume = "I do not have a resume. Assume I am a college student with basic work experience"
-
-    # Define the inputs to pass to CrewAI model
     inputs = {
-        'name' : name,
         'purpose': purpose,
         'theme': theme,
         'color': color,
         'layout': layout,
         'content': content,
-        'resume' : resume
+        'resume': resume
     }
+    
+    # Test to make sure that resume contents are read
+    print(resume)
 
     # Kickoff the portfolio flow with inputs
     flow = PortfolioFlow(inputs=inputs)

@@ -16,3 +16,6 @@ __pycache__
 
 # Ignore genrated wesbite files
 src/templates/website/
+
+# Ignore uploads folder
+uploads/

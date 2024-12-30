@@ -1,8 +1,8 @@
 html_generation_task:
   description: >
     Generate an HTML structure for a portfolio website based on the user's input.
-    The input includes the user's name, theme, color, layout preferences, and resume.
-    The user's name is {name}.
+    The input includes the user's coontent, theme, color, layout preferences, and resume.
+    The user's preferred content is {content}.
     The user's preferred theme is {theme}.
     The user's preferred color scheme is {color}.
     The user's preferred layout is {layout}.
